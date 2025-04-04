@@ -28,7 +28,8 @@ def summary(model):
                   metrics=['accuracy'])
     result = []
     for layer in model.layers:
-        descriptors = [layer.__class__.__name__, layer.output_shape, layer.count_params()]
+        output_shape = getattr(layer, 'output_shape', 'N/A')  # handles InputLayer safely
+        descriptors = [layer.__class__.__name__, output_shape, layer.count_params()]
         if (type(layer) == Conv2D):
             descriptors.append(layer.padding)
             descriptors.append(layer.activation.__name__)
